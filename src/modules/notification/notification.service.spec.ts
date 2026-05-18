@@ -85,7 +85,10 @@ describe('NotificationService', () => {
   });
 
   it('grava EMAIL para payment-failed com reason', async () => {
-    await service.handlePaymentFailed({ orderId: 'o1', reason: 'card_declined' });
+    await service.handlePaymentFailed({
+      orderId: 'o1',
+      reason: 'card_declined',
+    });
     expect(repo.create).toHaveBeenCalledWith(
       expect.objectContaining({
         channel: 'EMAIL',

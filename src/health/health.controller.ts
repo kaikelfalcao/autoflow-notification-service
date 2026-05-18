@@ -13,6 +13,7 @@ export class HealthController {
     mongo: 'connected' | 'disconnected';
     timestamp: string;
   } {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     const ready = this.connection.readyState === 1;
     return {
       status: ready ? 'ok' : 'degraded',

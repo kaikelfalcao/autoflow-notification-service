@@ -9,7 +9,8 @@ import { ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (cfg: ConfigService) => ({
         uri:
-          cfg.get<string>('RABBITMQ_URL') ?? 'amqp://admin:admin@localhost:5672',
+          cfg.get<string>('RABBITMQ_URL') ??
+          'amqp://admin:admin@localhost:5672',
         exchanges: [
           { name: 'order.events', type: 'topic' },
           { name: 'payment.events', type: 'topic' },
