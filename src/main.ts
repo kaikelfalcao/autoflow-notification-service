@@ -1,38 +1,18 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('newrelic');
 import { Logger } from '@nestjs/common';
-import mongoose from 'mongoose';
+import { NestFactory } from '@nestjs/core';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
-async function bootstrap() {
-  const logger = new Logger('Bootstrap');
+import { AppModule } from './app.module';
 
-  mongoose.connection.on('connected', () => {
-    console.log('✅ MongoDB connected');
-    logger.log('✅ MongoDB connected');
-  });
-
-  mongoose.connection.on('error', (err) => {
-    console.error('❌ MongoDB connection error:', err);
-    logger.error('❌ MongoDB connection error', err);
-  });
-
-  mongoose.connection.on('disconnected', () => {
-    console.warn('⚠️ MongoDB disconnected');
-    logger.warn('⚠️ MongoDB disconnected');
-  });
-
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-  
-  // Check if already connected (connection may have fired during app creation)
-  if (mongoose.connection.readyState === 1) {
-    console.log('✅ MongoDB connected (already connected)');
-    logger.log('✅ MongoDB connected (already connected)');
-  }
-  
-  const port = process.env.PORT || 3000;
-
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  const logger = new Logger('Bootstrap');
+  const port = Number(process.env.PORT ?? 3005);
   await app.listen(port);
-  logger.log(`🚀 Notification Service running on port ${port}`);
+  logger.log(`Notification Service running on port ${port}`);
 }
 
-bootstrap();
+void bootstrap();
