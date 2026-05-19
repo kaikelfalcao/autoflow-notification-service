@@ -10,7 +10,7 @@ import {
 export class NotificationRepository {
   constructor(
     @InjectModel(Notification.name)
-    private notificationModel: Model<NotificationDocument>,
+    private readonly notificationModel: Model<NotificationDocument>,
   ) {}
 
   async create(notification: Partial<Notification>): Promise<Notification> {
