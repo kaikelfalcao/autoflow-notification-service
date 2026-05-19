@@ -36,9 +36,7 @@ class EnvConfig {
   CORRELATION_ID_HEADER: string = 'x-correlation-id';
 }
 
-export function validateEnv(
-  config: Record<string, unknown>,
-): EnvConfig {
+export function validateEnv(config: Record<string, unknown>): EnvConfig {
   const validated = plainToInstance(EnvConfig, config, {
     enableImplicitConversion: true,
   });
