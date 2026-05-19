@@ -6,9 +6,7 @@ import { Connection } from 'mongoose';
 export class MongoHealth implements OnModuleInit {
   private readonly logger = new Logger(MongoHealth.name);
 
-  constructor(
-    @InjectConnection() private readonly connection: Connection,
-  ) {}
+  constructor(@InjectConnection() private readonly connection: Connection) {}
 
   onModuleInit() {
     const state = this.connection.readyState;
@@ -22,11 +20,11 @@ export class MongoHealth implements OnModuleInit {
 
     this.logger.log(`MongoDB state: ${statesMap[state]}`);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (state !== 1) {
       this.logger.error('MongoDB is NOT connected');
     } else {
       this.logger.log('✅ MongoDB is connected');
     }
-    
   }
 }
