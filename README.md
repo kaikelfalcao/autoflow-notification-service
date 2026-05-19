@@ -132,7 +132,7 @@ npm run lint           # ESLint flat config (eslint.config.mjs)
 
 Override de regras em `*.spec.ts` (no `eslint.config.mjs`): `unbound-method`, `require-await`, `no-unsafe-assignment/member-access` desativados — específico para mocks Jest.
 
-> **TODO:** SonarQube Community.
+> **Análise estática:** CodeQL via GitHub Actions (`.github/workflows/codeQL.yml`) — varredura de segurança em pushes na `main` e em pull requests.
 
 ---
 
