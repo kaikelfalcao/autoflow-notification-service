@@ -4,13 +4,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { HealthModule } from './health/health.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { validateEnv } from './shared/config/env.config';
 import { LoggerModule } from './shared/logger/logger.module';
 import { AppRabbitMqModule } from './shared/messaging/rabbitmq.module';
 import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middleware';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
     LoggerModule,
     MongooseModule.forRootAsync({
       inject: [ConfigService],
