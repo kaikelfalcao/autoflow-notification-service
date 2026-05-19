@@ -1,17 +1,28 @@
-name: CI
+name: Build
 
 on:
   push:
-    branches: ['**']
+    branches:
+      - main
+
   pull_request:
-    branches: ['**']
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  pull-requests: read
+  security-events: write
 
 env:
   NODE_VERSION: '24'
 
 jobs:
-  test:
-    name: Lint + Test + Coverage
+  CI:
+    name: CI pipeline
     runs-on: ubuntu-latest
 
     services:
@@ -41,24 +52,32 @@ jobs:
       NODE_ENV: test
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - run: npm ci
-      - run: npm run lint --if-present
-      - run: npm run test:cov
-      - run: npm run test:bdd --if-present
+      - name: Install dependencies
+        run: npm ci
 
-      # TODO: integrar SonarQube Community Edition (self-hosted) para emitir relatórios.
-      # SonarCloud removido temporariamente — voltar com `sonar-scanner` apontando para a instância community.
+      - name: Lint
+        run: npm run lint --if-present
 
-      - uses: actions/upload-artifact@v4
+      - name: Format check
+        run: npm run format:check --if-present
+
+      - name: Unit tests
+        run: npm run test:cov
+
+      - name: BDD tests
+        run: npm run test:bdd --if-present
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: coverage

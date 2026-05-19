@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:bdd": "cucumber-js",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "dependencies": {
     "@golevelup/nestjs-rabbitmq": "^9.0.0",
@@ -29,6 +30,8 @@
     "@nestjs/platform-express": "^11.0.1",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^2.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "mongoose": "^9.5.0",
     "nest-winston": "^1.10.2",
     "newrelic": "^13.20.0",
